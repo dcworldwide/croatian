@@ -49,10 +49,10 @@ if (Meteor.isClient) {
 
     function updateActiveWord() {
 
-        var cursor = Words.find({type: getWordFilter()});
-        var word = cursor.fetch({})[Math.floor(Math.random() * cursor.count())]
+        var cursor = Words.find({type: getWordFilter()}, {reactive: false}); // Disable reactivity for improved perf
+        var word = cursor.fetch({})[Math.floor(Math.random() * cursor.count())];
 
-        Session.set("activeWord", word);        // todo, wrap word in a model and push verb stuff into it
+        Session.set("activeWord", word);
         updateQuizQuestions();
     }
 
@@ -125,23 +125,14 @@ if (Meteor.isClient) {
         return Session.get("quizOption2");
     }
 
-    Template.wordView.userStatsPcCorrect = function () {
-        if (Meteor.user() && (Meteor.user().profile.stats.verbs.t + Meteor.user().profile.stats.verbs.f) > 0) {
-            return Math.round(100 * Meteor.user().profile.stats.verbs.t / (Meteor.user().profile.stats.verbs.t + Meteor.user().profile.stats.verbs.f));
-        }
-        else {
-            return 0;
-        }
-    }
-
-    Template.wordView.toggleVerbs = function() {
+    function toggleVerbs() {
         Session.set("enableVerbs", true);
         Session.set("enableNouns", false);
         Session.set("enableAdjectives", false);
         updateActiveWord();
     }
 
-    Template.wordView.toggleNouns = function() {
+    function toggleNouns() {
         Session.set("enableVerbs", false);
         Session.set("enableNouns", true);
         Session.set("enableAdjectives", false);
@@ -152,8 +143,22 @@ if (Meteor.isClient) {
         'click button.quizOption': function (e) {
             // template data, if any, is available in 'this'
             validateQuizResponse(e.currentTarget);
+        },
+        'click a.verbs': function (e) {
+            toggleVerbs();
+        },
+        'click a.nouns': function (e) {
+            toggleNouns();
         }
     });
+
+    Template.wordView.userVerbScore = function () {
+        return Meteor.user().getVerbScore();
+    }
+
+    Template.wordView.userNounScore = function () {
+        return Meteor.user().getNounScore();
+    }
 
     Template.wordView.rendered = function () {
 

@@ -13,38 +13,38 @@ Words.helpers({
             return {
                 past: {
                     sg: {
-                        f: getVerbConjugation(this.baseForm, 0, true, 1),
-                        s: getVerbConjugation(this.baseForm, 0, true, 2),
-                        t: getVerbConjugation(this.baseForm, 0, true, 3)
+                        f: getVerbConjugation(this, 0, true, 1),
+                        s: getVerbConjugation(this, 0, true, 2),
+                        t: getVerbConjugation(this, 0, true, 3)
                     },
                     pl: {
-                        f: getVerbConjugation(this.baseForm, 0, false, 1),
-                        s: getVerbConjugation(this.baseForm, 0, false, 2),
-                        t: getVerbConjugation(this.baseForm, 0, false, 3)
+                        f: getVerbConjugation(this, 0, false, 1),
+                        s: getVerbConjugation(this, 0, false, 2),
+                        t: getVerbConjugation(this, 0, false, 3)
                     }
                 },
                 present: {
                     sg: {
-                        f: getVerbConjugation(this.baseForm, 1, true, 1),
-                        s: getVerbConjugation(this.baseForm, 1, true, 2),
-                        t: getVerbConjugation(this.baseForm, 1, true, 3)
+                        f: getVerbConjugation(this, 1, true, 1),
+                        s: getVerbConjugation(this, 1, true, 2),
+                        t: getVerbConjugation(this, 1, true, 3)
                     },
                     pl: {
-                        f: getVerbConjugation(this.baseForm, 1, false, 1),
-                        s: getVerbConjugation(this.baseForm, 1, false, 2),
-                        t: getVerbConjugation(this.baseForm, 1, false, 3)
+                        f: getVerbConjugation(this, 1, false, 1),
+                        s: getVerbConjugation(this, 1, false, 2),
+                        t: getVerbConjugation(this, 1, false, 3)
                     }
                 },
                 future: {
                     sg: {
-                        f: getVerbConjugation(this.baseForm, 2, true, 1),
-                        s: getVerbConjugation(this.baseForm, 2, true, 2),
-                        t: getVerbConjugation(this.baseForm, 2, true, 3)
+                        f: getVerbConjugation(this, 2, true, 1),
+                        s: getVerbConjugation(this, 2, true, 2),
+                        t: getVerbConjugation(this, 2, true, 3)
                     },
                     pl: {
-                        f: getVerbConjugation(this.baseForm, 2, false, 1),
-                        s: getVerbConjugation(this.baseForm, 2, false, 2),
-                        t: getVerbConjugation(this.baseForm, 2, false, 3)
+                        f: getVerbConjugation(this, 2, false, 1),
+                        s: getVerbConjugation(this, 2, false, 2),
+                        t: getVerbConjugation(this, 2, false, 3)
                     }
                 }
             };
@@ -53,6 +53,15 @@ Words.helpers({
         {
             throw new Meteor.Error(0, "Unable to produce Verb Conjugation Table")
         }
+    },
+    isVerb: function() {
+        return this.type == 'v';
+    },
+    isNoun: function() {
+        return this.type == 'n';
+    },
+    isAdjective: function() {
+        return this.type == 'a';
     }
 });
 
@@ -229,6 +238,22 @@ Meteor.users.helpers({
             }
 
             Meteor.users.update(Meteor.userId(), {$set: {'profile.stats.score': Meteor.user().profile.stats.score + (success ? 1 : -1)}});
+        }
+    },
+    getVerbScore: function() {
+        if (Meteor.user() && (Meteor.user().profile.stats.verbs.t + Meteor.user().profile.stats.verbs.f) > 0) {
+            return Math.round(100 * Meteor.user().profile.stats.verbs.t / (Meteor.user().profile.stats.verbs.t + Meteor.user().profile.stats.verbs.f));
+        }
+        else {
+            return 0;
+        }
+    },
+    getNounScore: function() {
+        if (Meteor.user() && (Meteor.user().profile.stats.nouns.t + Meteor.user().profile.stats.nouns.f) > 0) {
+            return Math.round(100 * Meteor.user().profile.stats.nouns.t / (Meteor.user().profile.stats.nouns.t + Meteor.user().profile.stats.nouns.f));
+        }
+        else {
+            return 0;
         }
     }
 });
