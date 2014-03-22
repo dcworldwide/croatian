@@ -1,0 +1,150 @@
+if (Meteor.isClient) {
+  
+	Meteor.startup(function () {
+		Meteor.subscribe("verbs", function () {
+			Session.set("activeVerb", Verbs.findOne());
+		
+			updateQuizQuestions();
+		});
+	});  
+	
+	function getRandomVerbIndex() {
+	 	return Math.floor(Math.random() * Verbs.find().count());
+	}	
+	
+	function updateActiveVerb() {
+		Session.set("activeVerb", Verbs.find().fetch({})[getRandomVerbIndex()]);
+		updateQuizQuestions();
+	}
+
+	function updateQuizQuestions() {
+		var correctQuizOption = Math.floor(Math.random() * 2);
+		
+		if (correctQuizOption == 1)
+		{
+			Session.set("quizOption1", Session.get("activeVerb").english);
+			Session.set("quizOption2", Verbs.find().fetch({})[getRandomVerbIndex()].english);
+		}
+		else {
+			Session.set("quizOption2", Session.get("activeVerb").english);
+			Session.set("quizOption1", Verbs.find().fetch({})[getRandomVerbIndex()].english);
+		}
+	}	
+	
+	Template.wordView.activeVerb = function () {
+		return Session.get("activeVerb");
+	}
+
+	Template.wordView.quizOption1 = function() {
+		return Session.get("quizOption1");
+	}
+  
+	Template.wordView.quizOption2 = function() {
+		return Session.get("quizOption2");
+	}  
+  
+  	Template.wordView.events({
+ 		'click input': function () {
+			// template data, if any, is available in 'this'
+			updateActiveVerb();	  
+		}
+	});
+	
+	Template.wordView.rendered = function() {
+		
+	};
+	
+	String.prototype.endsWith = function(suffix) {
+	    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+	};
+	
+	/**
+	  * Returns all conjugations of a Verb.
+	  *
+	  *
+	  */
+	function getVerbConjugation(baseForm, verbClass, isSingular, person) {
+	  
+	  switch (verbClass)
+	  {
+	    case 1:
+	      return baseForm.replace("ti", "jem");      
+	      break;
+	    case 2:
+	      return baseForm.replace("ti", "jem");      
+	      break;
+	    case 3:
+	            
+	      var extension = (baseForm.endsWith("iti") ? "iti" : "ti");
+	      SpreadsheetApp.getUi().alert(baseForm + " " + extension);
+	      SpreadsheetApp.getUi().alert(baseForm.replace(extension, "im"));
+	      
+	      if (isSingular)
+	      {
+	        switch (person)
+	        {
+	          case 1:
+	            return baseForm.replace(extension, "im"); 
+	          case 2:
+	            return baseForm.replace(extension, "is^");
+	          case 3:
+	            return baseForm.replace(extension, "i");
+	          default:
+	            return "Invalid person"
+	        }
+	      }
+	      else
+	      {
+	        switch (person)
+	        {
+	          case 1:
+	            return baseForm.replace(extension, "imo");   
+	          case 2:
+	            return baseForm.replace(extension, "ite");   
+	          case 3:
+	            return baseForm.replace(extension, "e");
+	          default:
+	            return "Invalid person"
+	        }
+	      }
+	      
+	      break;
+	    case 4:      
+	      
+	      if (isSingular)
+	      {
+	        switch (person)
+	        {
+	          case 1:
+	            return baseForm.replace("ti", "jem");      
+	          case 2:
+	            return baseForm.replace("ti", "je^s");      
+	          case 3:
+	            return baseForm.replace("ti", "je");      
+	          default:
+	            return "Invalid person"
+	        }
+	      }
+	      else
+	      {
+	        switch (person)
+	        {
+	          case 1:
+	            return baseForm.replace("ti", "jemo");      
+	          case 2:
+	            return baseForm.replace("ti", "jete");      
+	          case 3:
+	            return baseForm.replace("ti", "ju");      
+	          default:
+	            return "Invalid person"
+	        }
+	      }
+	      
+	      break;
+	    case "irregular":
+	      break;
+	    default:
+	      return "N\A"
+	  }
+	}
+}

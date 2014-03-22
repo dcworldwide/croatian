@@ -1,0 +1,254 @@
+<head>
+  <meta charset="utf-8"> <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Croatian Language</title>
+</head>
+
+<body>
+  {{> wordView}}
+</body>
+
+
+<template name="wordView">
+		
+	 <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+	  {{#if isUserLoggedIn}}
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+	  {{/if}}
+          <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-globe"></span>&nbsp;Croatian</a>
+        </div>
+        {{#if isUserLoggedIn}}
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+	      <a href="#">
+		Verbs&nbsp;
+		{{#if isUserLoggedIn}}
+		  <span class="badge">
+		    {{userStatsPcCorrect}}%
+		  </span>
+		{{/if}}		
+	      </a>
+	    </li>
+            <li><a href="#about">
+	      Nouns&nbsp;
+	      {{#if isUserLoggedIn}}
+		<span class="badge">
+		  0%
+		</span>
+	      {{/if}}	
+            </a></li>
+            <li><a href="#contact">
+	      Adjectives&nbsp;
+	      {{#if isUserLoggedIn}}
+		<span class="badge">
+		  0%
+		</span>
+	      {{/if}}
+            </a></li>
+            <li>
+	      <div>
+		{{> loginButtons}}
+	      </div>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="container">
+    
+      {{#if isUserLoggedIn}}
+	<!-- Main component for a primary marketing message or call to action -->
+	<div id="quizContainer">
+	  <h1>{{activeVerb.baseForm}}</h1>
+	  <hr />
+	  <p>	
+	    <button type="button" class="quizOption btn btn-default btn-lg btn-block">{{quizOption1}}</button>
+	    <br />
+	    <button type="button" class="quizOption btn btn-default btn-lg btn-block">{{quizOption2}}</button>
+	  </p>
+	</div>
+
+	<div align="center">
+
+	  <br />
+	  
+	  <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#verbTableModal">
+	    <span class="glyphicon glyphicon-list"></span>&nbsp;Conjugation Table
+	  </button>
+	  
+	  <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#leaderboardModal">
+	    <span class="glyphicon glyphicon-user"></span>&nbsp;Leaderboard
+	  </button>
+	
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="verbTableModal" tabindex="-1" role="dialog" aria-labelledby="verbTableModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="verbTableModalLabel">Verb Conjugations</h4>
+	      </div>
+	      <div class="modal-body">
+		<div class="alert alert-info">
+		  English: <strong>{{activeVerb.english}}</strong>&nbsp;Class: <strong>{{activeVerb.class}}</strong>
+		</div>
+		<ul class="nav nav-tabs">
+		  <li class="active">
+		    <a href="#verbsPastTense" data-toggle="tab">Past</a>
+		  </li>
+		  <li><a href="#verbsPresentTense" data-toggle="tab">Present</a></li>
+		  <li><a href="#verbsFutureTense" data-toggle="tab">Future</a></li>
+		</ul>
+		<br />
+		<div class="tab-content">
+		  <div id="verbsPastTense" class="tab-pane active">
+		    <div class="table-responsive">
+		      <table class="table table-striped">
+			<thead>
+			  <tr>
+			    <th>Sg</th>
+			    <th>Pl</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr>
+			    <td>{{verbConjTable.past.sg.f}}</td>
+			    <td>{{verbConjTable.past.pl.f}}</td>
+			  </tr>
+			  <tr>
+			    <td>{{verbConjTable.past.sg.s}}</td>
+			    <td>{{verbConjTable.past.pl.s}}</td>
+			  </tr>
+			  <tr>
+			    <td>{{verbConjTable.past.sg.t}}</td>
+			    <td>{{verbConjTable.past.pl.t}}</td>
+			  </tr>
+			</tbody>
+		      </table>
+		    </div>
+		  </div>
+		  <div id="verbsPresentTense" class="tab-pane">
+		    <div class="table-responsive">
+		      <table class="table table-striped">
+			<thead>
+			  <tr>
+			    <th>Sg</th>
+			    <th>Pl</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr>
+			    <td>{{verbConjTable.present.sg.f}}</td>
+			    <td>{{verbConjTable.present.pl.f}}</td>
+			  </tr>
+			  <tr>
+			    <td>{{verbConjTable.present.sg.s}}</td>
+			    <td>{{verbConjTable.present.pl.s}}</td>
+			  </tr>
+			  <tr>
+			    <td>{{verbConjTable.present.sg.t}}</td>
+			    <td>{{verbConjTable.present.pl.t}}</td>
+			  </tr>
+			</tbody>
+		      </table>
+		    </div>	  
+		  </div>
+		  <div id="verbsFutureTense" class="tab-pane">
+		    <div class="table-responsive">
+		      <table class="table table-striped">
+			<thead>
+			  <tr>
+			    <th>Sg</th>
+			    <th>Pl</th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr>
+			    <td>{{verbConjTable.future.sg.f}}</td>
+			    <td>{{verbConjTable.future.pl.f}}</td>
+			  </tr>
+			  <tr>
+			    <td>{{verbConjTable.future.sg.s}}</td>
+			    <td>{{verbConjTable.future.pl.s}}</td>
+			  </tr>
+			  <tr>
+			    <td>{{verbConjTable.future.sg.t}}</td>
+			    <td>{{verbConjTable.future.pl.t}}</td>
+			  </tr>
+			</tbody>
+		      </table>
+		    </div>
+		  </div>
+		</div>
+	      </div>
+	      <!--
+	      <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	      -->
+	    </div>
+	  </div>
+	</div>
+      
+	<!-- Modal -->
+	<div class="modal fade" id="leaderboardModal" tabindex="-1" role="dialog" aria-labelledby="leardboardModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="leaderboardModalLabel">Verb Conjugations</h4>
+	      </div>
+	      <div class="modal-body">
+		{{> leaderboard}}
+	      </div>	      
+	    </div>
+	  </div>
+	</div>
+	
+      {{else}}      
+	<div class="alert alert-info">
+	  <div>Who are you?</div>
+	  <br />
+	  <div>{{> loginButtons}}</div>
+	</div>
+      {{/if}}
+    </div> <!-- /container -->		
+		
+</template>
+
+<template name="leaderboard">
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+	<tr>
+	  <th>Rank</th>
+	  <th>Name</th>
+	  <th>Score</th>
+	</tr>
+      </thead>
+      <tbody>
+	{{#each players}}
+	  <tr>
+	    <td>#</td>
+	    <td>{{profile.name}}</td>
+	    <td>{{profile.stats.score}}</td>
+	  </tr>
+	 {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>

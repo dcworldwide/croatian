@@ -1,0 +1,4 @@
+// common code on client and server declares livedata-managed mongo collection.
+
+Verbs = new Meteor.Collection("verbs");
+Nouns = new Meteor.Collection("nouns");
