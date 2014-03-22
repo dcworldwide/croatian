@@ -1,0 +1,32 @@
+
+If you need to restructure the database, the approach is to use handlebars in the template layer to produce mongodb insert statements.
+
+i.e.
+
+
+    {{#each words}}
+
+        Word.insert(
+        {
+        rnd: Math.random(),
+        type: "{{type}}",
+        english: "{{camelCase english}}",
+        baseForm: "{{camelCase baseForm}}",
+        class: {{class}}
+        });
+
+        <br />
+        <br />
+
+    {{/each}}
+
+
+    Template.wordView.words = function () {
+        return Words.find({}, {sort: { english : 1 }});
+    }
+
+    Handlebars.registerHelper("camelCase", function(input) {
+        return input.toLowerCase().replace(/-(.)/g, function(match, group1) {
+            return group1.toUpperCase();
+        })
+    });

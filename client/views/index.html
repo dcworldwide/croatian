@@ -11,7 +11,7 @@
 
 
 <template name="wordView">
-		
+
 	 <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
@@ -30,7 +30,7 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active">
-	      <a href="#">
+	      <a href="">
 		Verbs&nbsp;
 		{{#if isUserLoggedIn}}
 		  <span class="badge">
@@ -71,7 +71,7 @@
       {{#if isUserLoggedIn}}
 	<!-- Main component for a primary marketing message or call to action -->
 	<div id="quizContainer">
-	  <h1>{{activeVerb.baseForm}}</h1>
+	  <h1>{{activeWord.baseForm}}</h1>
 	  <hr />
 	  <p>	
 	    <button type="button" class="quizOption btn btn-default btn-lg btn-block">{{quizOption1}}</button>
@@ -104,7 +104,7 @@
 	      </div>
 	      <div class="modal-body">
 		<div class="alert alert-info">
-		  English: <strong>{{activeVerb.english}}</strong>&nbsp;Class: <strong>{{activeVerb.class}}</strong>
+		  English: <strong>{{activeWord.english}}</strong>&nbsp;Class: <strong>{{activeWord.class}}</strong>
 		</div>
 		<ul class="nav nav-tabs">
 		  <li class="active">
@@ -126,16 +126,16 @@
 			</thead>
 			<tbody>
 			  <tr>
-			    <td>{{verbConjTable.past.sg.f}}</td>
-			    <td>{{verbConjTable.past.pl.f}}</td>
+			    <td>{{verbConjugationTable.past.sg.f}}</td>
+			    <td>{{verbConjugationTable.past.pl.f}}</td>
 			  </tr>
 			  <tr>
-			    <td>{{verbConjTable.past.sg.s}}</td>
-			    <td>{{verbConjTable.past.pl.s}}</td>
+			    <td>{{verbConjugationTable.past.sg.s}}</td>
+			    <td>{{verbConjugationTable.past.pl.s}}</td>
 			  </tr>
 			  <tr>
-			    <td>{{verbConjTable.past.sg.t}}</td>
-			    <td>{{verbConjTable.past.pl.t}}</td>
+			    <td>{{verbConjugationTable.past.sg.t}}</td>
+			    <td>{{verbConjugationTable.past.pl.t}}</td>
 			  </tr>
 			</tbody>
 		      </table>
@@ -152,16 +152,16 @@
 			</thead>
 			<tbody>
 			  <tr>
-			    <td>{{verbConjTable.present.sg.f}}</td>
-			    <td>{{verbConjTable.present.pl.f}}</td>
+			    <td>{{verbConjugationTable.present.sg.f}}</td>
+			    <td>{{verbConjugationTable.present.pl.f}}</td>
 			  </tr>
 			  <tr>
-			    <td>{{verbConjTable.present.sg.s}}</td>
-			    <td>{{verbConjTable.present.pl.s}}</td>
+			    <td>{{verbConjugationTable.present.sg.s}}</td>
+			    <td>{{verbConjugationTable.present.pl.s}}</td>
 			  </tr>
 			  <tr>
-			    <td>{{verbConjTable.present.sg.t}}</td>
-			    <td>{{verbConjTable.present.pl.t}}</td>
+			    <td>{{verbConjugationTable.present.sg.t}}</td>
+			    <td>{{verbConjugationTable.present.pl.t}}</td>
 			  </tr>
 			</tbody>
 		      </table>
@@ -178,16 +178,16 @@
 			</thead>
 			<tbody>
 			  <tr>
-			    <td>{{verbConjTable.future.sg.f}}</td>
-			    <td>{{verbConjTable.future.pl.f}}</td>
+			    <td>{{verbConjugationTable.future.sg.f}}</td>
+			    <td>{{verbConjugationTable.future.pl.f}}</td>
 			  </tr>
 			  <tr>
-			    <td>{{verbConjTable.future.sg.s}}</td>
-			    <td>{{verbConjTable.future.pl.s}}</td>
+			    <td>{{verbConjugationTable.future.sg.s}}</td>
+			    <td>{{verbConjugationTable.future.pl.s}}</td>
 			  </tr>
 			  <tr>
-			    <td>{{verbConjTable.future.sg.t}}</td>
-			    <td>{{verbConjTable.future.pl.t}}</td>
+			    <td>{{verbConjugationTable.future.sg.t}}</td>
+			    <td>{{verbConjugationTable.future.pl.t}}</td>
 			  </tr>
 			</tbody>
 		      </table>
