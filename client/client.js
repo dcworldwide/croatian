@@ -52,6 +52,9 @@ if (Meteor.isClient) {
         var cursor = Words.find({type: getWordFilter()}, {reactive: false}); // Disable reactivity for improved perf
         var word = cursor.fetch({})[Math.floor(Math.random() * cursor.count())];
 
+        // Refresh conjugations
+        word.updateVerbConjugationTable();
+
         Session.set("activeWord", word);
         updateQuizQuestions();
     }
@@ -161,7 +164,6 @@ if (Meteor.isClient) {
     }
 
     Template.wordView.rendered = function () {
-
     };
 
     Template.leaderboard.players = function () {

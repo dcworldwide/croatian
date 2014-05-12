@@ -6,21 +6,26 @@ String.prototype.endsWith = function(suffix) {
 Words = new Meteor.Collection("words");
 
 Words.helpers({
-    verbConjugationTable: function () {
+
+    verbConjugationTable: null,
+
+    updateVerbConjugationTable: function () {
+
+        console.log(this);
 
         if (this.type == 'v')
         {
-            return {
+            this.verbConjugationTable = {
                 past: {
                     sg: {
-                        f: getVerbConjugation(this, 0, true, 1),
-                        s: getVerbConjugation(this, 0, true, 2),
-                        t: getVerbConjugation(this, 0, true, 3)
+                        f: getVerbConjugation(this, 0, true, 'm'),
+                        s: getVerbConjugation(this, 0, true, 'f'),
+                        t: getVerbConjugation(this, 0, true, 'n')
                     },
                     pl: {
-                        f: getVerbConjugation(this, 0, false, 1),
-                        s: getVerbConjugation(this, 0, false, 2),
-                        t: getVerbConjugation(this, 0, false, 3)
+                        f: getVerbConjugation(this, 0, false, 'm'),
+                        s: getVerbConjugation(this, 0, false, 'f'),
+                        t: getVerbConjugation(this, 0, false, 'n')
                     }
                 },
                 present: {
@@ -70,25 +75,85 @@ Words.helpers({
  *
  *
  */
-function getVerbConjugation(verb, tense, isSingular, person) {
+function getVerbConjugation(verb, tense, isSingular, personOrGender) {
 
     if (tense == 0)
     {
         // Past
         var extension = (verb.baseForm.endsWith("iti") ? "iti" : "ti");
 
-        return "TODO";
+        if (isSingular)
+        {
+            switch (personOrGender)
+            {
+                case 'm':
+                    return verb.baseForm.replace(extension, "o");
+                case 'f':
+                    return verb.baseForm.replace(extension, "la");
+                case 'n':
+                    return verb.baseForm.replace(extension, "le");
+                default:
+                    return "Invalid person"
+            }
+        }
+        else
+        {
+            switch (personOrGender)
+            {
+                case 'm':
+                    return verb.baseForm.replace(extension, "li");
+                case 'f':
+                    return verb.baseForm.replace(extension, "le");
+                case 'n':
+                    return verb.baseForm.replace(extension, "lo");
+                default:
+                    return "Invalid person"
+            }
+        }
     }
     else if (tense == 1)
     {
-        if (verb.case == 3)
+        // Present
+        if (verb.class == 1)
         {
-            // Present
+            var extension = (verb.baseForm.endsWith("ati") ? "ati" : "ti");
+
+            if (isSingular)
+            {
+                switch (personOrGender)
+                {
+                    case 1:
+                        return verb.baseForm.replace(extension, "am");
+                    case 2:
+                        return verb.baseForm.replace(extension, "as^");
+                    case 3:
+                        return verb.baseForm.replace(extension, "a");
+                    default:
+                        return "Invalid person"
+                }
+            }
+            else
+            {
+                switch (personOrGender)
+                {
+                    case 1:
+                        return verb.baseForm.replace(extension, "amo");
+                    case 2:
+                        return verb.baseForm.replace(extension, "ate");
+                    case 3:
+                        return verb.baseForm.replace(extension, "aju");
+                    default:
+                        return "Invalid person"
+                }
+            }
+        }
+        else if (verb.class == 2)
+        {
             var extension = (verb.baseForm.endsWith("iti") ? "iti" : "ti");
 
             if (isSingular)
             {
-                switch (person)
+                switch (personOrGender)
                 {
                     case 1:
                         return verb.baseForm.replace(extension, "im");
@@ -102,7 +167,7 @@ function getVerbConjugation(verb, tense, isSingular, person) {
             }
             else
             {
-                switch (person)
+                switch (personOrGender)
                 {
                     case 1:
                         return verb.baseForm.replace(extension, "imo");
@@ -115,11 +180,44 @@ function getVerbConjugation(verb, tense, isSingular, person) {
                 }
             }
         }
-        else if (verb.case == 4)
+        else if (verb.class == 3)
+        {
+            var extension = (verb.baseForm.endsWith("iti") ? "iti" : "ti");
+
+            if (isSingular)
+            {
+                switch (personOrGender)
+                {
+                    case 1:
+                        return verb.baseForm.replace(extension, "im");
+                    case 2:
+                        return verb.baseForm.replace(extension, "is^");
+                    case 3:
+                        return verb.baseForm.replace(extension, "i");
+                    default:
+                        return "Invalid person"
+                }
+            }
+            else
+            {
+                switch (personOrGender)
+                {
+                    case 1:
+                        return verb.baseForm.replace(extension, "imo");
+                    case 2:
+                        return verb.baseForm.replace(extension, "ite");
+                    case 3:
+                        return verb.baseForm.replace(extension, "e");
+                    default:
+                        return "Invalid person"
+                }
+            }
+        }
+        else if (verb.class == 4)
         {
             if (isSingular)
             {
-                switch (person)
+                switch (personOrGender)
                 {
                     case 1:
                         return verb.baseForm.replace("ti", "jem");
@@ -133,7 +231,7 @@ function getVerbConjugation(verb, tense, isSingular, person) {
             }
             else
             {
-                switch (person)
+                switch (personOrGender)
                 {
                     case 1:
                         return verb.baseForm.replace("ti", "jemo");
@@ -146,7 +244,7 @@ function getVerbConjugation(verb, tense, isSingular, person) {
                 }
             }
         }
-        else if (verb.case == "irregular")
+        else if (verb.class == "irregular")
         {
             return "TOOD";
         }
@@ -160,7 +258,7 @@ function getVerbConjugation(verb, tense, isSingular, person) {
         // Future
         if (isSingular)
         {
-            switch (person)
+            switch (personOrGender)
             {
                 case 1:
                     return "cu " + verb.baseForm;
@@ -174,7 +272,7 @@ function getVerbConjugation(verb, tense, isSingular, person) {
         }
         else
         {
-            switch (person)
+            switch (personOrGender)
             {
                 case 1:
                     return "cemo " + verb.baseForm;

@@ -14,18 +14,18 @@
       },
       "collection-helpers": {
         "git": "https://github.com/dburles/meteor-collection-helpers.git",
-        "tag": "v0.2.4",
-        "commit": "e10ac53aa03e9656ee8ecaff7b9054dcb3a8a791"
+        "tag": "v0.2.6",
+        "commit": "f04819e9a148fb8992c7a345503167dfb1b9ad3e"
       },
       "collection2": {
         "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.3.9",
-        "commit": "fdda9b5c87e9dcb5cb67087ecb6c9f21352d0cc2"
+        "tag": "v0.3.11",
+        "commit": "7e970671305657678e8508d8107d5e6c5e158559"
       },
       "simple-schema": {
         "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.2.42",
-        "commit": "85ce399ec94ecc6b9b2fdb114bddaceba82f3a03"
+        "tag": "v0.4.0",
+        "commit": "2cc6aac0d35a4e00b065c1437d540b2aefba5241"
       }
     }
   }

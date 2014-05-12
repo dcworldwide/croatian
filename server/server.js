@@ -3113,8 +3113,10 @@ ServiceConfiguration.configurations.insert({
 Accounts.onCreateUser(function (options, user) {
 
     // We still want the default hook's 'profile' behavior.
-    if (options.profile)
+    if (options.profile) {
+        options.profile.picture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?type=square";
         user.profile = options.profile;
+    }
 
     user.profile.stats = {
         verbs: {

@@ -1,13 +1,14 @@
 <head>
     <meta charset="utf-8">
-    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Croatian Language</title>
 </head>
 
 <body>
-{{> wordView}}
+
+    {{> wordView}}
+
 </body>
 
 
@@ -254,7 +255,7 @@
             {{#each players}}
             <tr>
                 <td>#</td>
-                <td>{{profile.name}}</td>
+                <td><img src="{{profile.picture}}" />&nbsp;<a href="{{services.facebook.link}}">{{profile.name}}</a></td>
                 <td>{{profile.stats.score}}</td>
             </tr>
             {{/each}}
