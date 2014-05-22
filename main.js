@@ -48,6 +48,9 @@ Words.helpers({
 
         var useBase = Math.floor(Math.random() * 2) == 0;
 
+        // TODO
+        useBase = true;
+
         if (useBase)
         {
             this.quizQuestion = this.baseForm;
