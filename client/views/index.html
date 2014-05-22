@@ -58,9 +58,7 @@
                     {{/if}}
                 </a></li>
                 <li>
-
-                        {{> loginButtons}}
-
+                    {{> loginButtons}}
                 </li>
             </ul>
         </div>
@@ -74,7 +72,7 @@
     {{#if isUserLoggedIn}}
     <!-- Main component for a primary marketing message or call to action -->
     <div id="quizContainer">
-        <h1>{{activeWord.baseForm}}</h1>
+        <div data-toggle="modal" data-target="#hintModal"><h1>{{activeWord.quizQuestion}}</h1></div>
         <hr/>
         <p>
             <button type="button" class="quizOption btn btn-default btn-lg btn-block">{{quizOption1}}</button>
@@ -99,7 +97,7 @@
 
     </div>
 
-    <!-- Modal -->
+    <!-- Verb Table Modal -->
     <div class="modal fade" id="verbTableModal" tabindex="-1" role="dialog" aria-labelledby="verbTableModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -212,7 +210,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Leaderboard Modal -->
     <div class="modal fade" id="leaderboardModal" tabindex="-1" role="dialog" aria-labelledby="leardboardModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -225,6 +223,45 @@
                     {{> leaderboard}}
                 </div>
             </div>
+
+        </div>
+    </div>
+
+    <!-- Hint Modeal -->
+    <div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="hintModalLabel">Verb Conjugations</h4>
+                </div>
+                <div class="modal-body">
+                    {{#if activeWord.quizQuestionHint.isBaseForm}}
+                    {{activeWord.quizQuestion}} is in base (dictionary) form. Base form Verbs must be conjugated before use.
+                    {{else}}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Tense</th>
+                                <th>Cardinality</th>
+                                <th>Person / Gender</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{activeWord.quizQuestionHint.tense}}</td>
+                                <td>{{activeWord.quizQuestionHint.cardinality}}</td>
+                                <td>{{activeWord.quizQuestionHint.personOrGender}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+
         </div>
     </div>
 

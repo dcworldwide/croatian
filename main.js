@@ -1,13 +1,83 @@
 // common code on client and server declares livedata-managed mongo collection.
-String.prototype.endsWith = function(suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
-};
+if (!String.prototype.endsWith) {
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
+
+// First, checks if it isn't implemented yet.
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+}
 
 Words = new Meteor.Collection("words");
 
 Words.helpers({
 
     verbConjugationTable: null,
+    quizQuestion: null,
+    quizQuestionHint: null,
+
+    isVerb: function() {
+        return this.type == 'v';
+    },
+
+    isNoun: function() {
+        return this.type == 'n';
+    },
+
+    isAdjective: function() {
+        return this.type == 'a';
+    },
+
+    updateProperties: function () {
+        this.updateQuizQuestion();
+        this.updateVerbConjugationTable();
+    },
+
+    // Defines a randomised quiz question
+    updateQuizQuestion: function () {
+
+        var useBase = Math.floor(Math.random() * 2) == 0;
+
+        if (useBase)
+        {
+            this.quizQuestion = this.baseForm;
+
+            // Define a hint
+            this.quizQuestionHint = {
+                isBaseForm: true
+            };
+        }
+        else
+        {
+            var tense = Math.floor(Math.random() * 3);
+            var plural = Math.floor(Math.random() * 2);
+            var personOrGender = tense == 0 ? (['m','f','n'][Math.floor(Math.random() * 3)]) : (Math.floor(Math.random() * 3) + 1);
+
+            console.log(tense);
+            console.log(plural);
+            console.log(personOrGender);
+
+            this.quizQuestion = getVerbConjugation(this, tense, plural, personOrGender);
+
+            // Define a hint
+            this.quizQuestionHint = {
+                isBaseForm: false,
+                tense: (tense == 0 ? "Past" : tense == 1 ? "Present" : "Future"),
+                cardinality: plural ? "Plural" : "Singular",
+                personOrGender : personOrGender
+            };
+        }
+    },
 
     updateVerbConjugationTable: function () {
 
@@ -58,15 +128,6 @@ Words.helpers({
         {
             throw new Meteor.Error(0, "Unable to produce Verb Conjugation Table")
         }
-    },
-    isVerb: function() {
-        return this.type == 'v';
-    },
-    isNoun: function() {
-        return this.type == 'n';
-    },
-    isAdjective: function() {
-        return this.type == 'a';
     }
 });
 
@@ -91,7 +152,7 @@ function getVerbConjugation(verb, tense, isSingular, personOrGender) {
                 case 'f':
                     return verb.baseForm.replace(extension, "la");
                 case 'n':
-                    return verb.baseForm.replace(extension, "le");
+                    return verb.baseForm.replace(extension, "lo");
                 default:
                     return "Invalid person"
             }
@@ -105,7 +166,7 @@ function getVerbConjugation(verb, tense, isSingular, personOrGender) {
                 case 'f':
                     return verb.baseForm.replace(extension, "le");
                 case 'n':
-                    return verb.baseForm.replace(extension, "lo");
+                    return verb.baseForm.replace(extension, "la");
                 default:
                     return "Invalid person"
             }

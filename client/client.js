@@ -53,10 +53,10 @@ if (Meteor.isClient) {
         var word = cursor.fetch({})[Math.floor(Math.random() * cursor.count())];
 
         // Refresh conjugations
-        word.updateVerbConjugationTable();
+        word.updateProperties();
 
         Session.set("activeWord", word);
-        updateQuizQuestions();
+        updateQuizAnswerOptions();
     }
 
 
@@ -77,7 +77,7 @@ if (Meteor.isClient) {
         }
     }
 
-    function updateQuizQuestions() {
+    function updateQuizAnswerOptions() {
         var correctQuizOption = Math.floor(Math.random() * 2);
 
         if (correctQuizOption == 1) {
@@ -164,6 +164,7 @@ if (Meteor.isClient) {
     }
 
     Template.wordView.rendered = function () {
+
     };
 
     Template.leaderboard.players = function () {
